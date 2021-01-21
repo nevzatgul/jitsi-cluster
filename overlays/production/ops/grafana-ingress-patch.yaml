@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  tls:
+  - hosts:
+    - edurusma.adalet.gov.tr
+    secretName: edurusma-adalet-gov-tr-tls
+  rules:
+    - host: edurusma.adalet.gov.tr
+      http:
+        paths:
+        # only match /grafana and paths under /grafana/
+        - path: /grafana(/|$)(.*)
+          backend:
+            serviceName: grafana
+            servicePort: http

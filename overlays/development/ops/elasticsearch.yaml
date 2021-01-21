@@ -1,0 +1,51 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+  namespace: logging
+spec:
+  version: 7.7.0
+  auth:
+    fileRealm:
+    - secretName: es-filerealm-secret
+  nodeSets:
+    - name: all-in-one
+      count: 2 # gercek degeri 2 idi
+      config:
+        node.master: true
+        node.data: true
+        node.ingest: true
+      podTemplate:
+        spec:
+          # containers alanı 2000mbit olan varsayilan ram ihtiyacını dusurmek icin eklendi.
+          containers:
+          - name: elasticsearch
+            env:
+            - name: ES_JAVA_OPTS
+              value: -Xms100m -Xmx1g
+            resources:
+              requests:
+                memory: 2000Mi
+                cpu: 1000m
+              limits:
+                memory: 2000Mi
+                cpu: 1000m
+            env: # sonradan ekledim
+              - name: TZ
+                value: Europe/Istanbul
+          initContainers:
+            # see https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-virtual-memory.html#k8s-virtual-memory
+            - name: sysctl
+              securityContext:
+                privileged: true
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144'] # ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 5Gi
+            storageClassName: rook-ceph-block #ionos-enterprise-hdd

@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: haproxy-ingress
+  namespace: jitsi
+spec:
+  tls:
+  - hosts:
+    - edurusma.adalet.gov.tr
+    secretName: edurusma.adalet.gov.tr-tls
+  rules:
+    - host: edurusma.adalet.gov.tr
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: haproxy
+            servicePort: 80

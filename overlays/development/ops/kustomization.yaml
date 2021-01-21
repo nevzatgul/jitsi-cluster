@@ -1,0 +1,18 @@
+bases:
+  - ../../../base/ops
+
+resources:
+  #- local-storage-sc.yaml
+  #- local-storage-pv.yaml
+  - certificate.yaml
+  - elasticsearch.yaml
+  - grafana-tls-secret.yaml
+  #- elasticsearch-pv.yaml
+  #- prometheus-pv.yaml
+
+patchesStrategicMerge:
+  - grafana-deployment-patch.yaml
+  - grafana-ingress-patch.yaml
+  - prometheus-prometheus-patch.yaml
+  - haproxy-ingress-patch.yaml
+  - nginx-ingress-patch.yaml

@@ -1,0 +1,21 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: jitsi
+  name: jicofo-entrypoint
+data:
+  entrypoint.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    # VP9 ozelligini aktiflestiriyoruz.
+    # Bu tanimlar yalnizca bilgi amacli oluyor. Tetiklemek icin deployment tarafina bakin.
+
+    echo "VP9 aktiflestiriliyor..."
+    echo "org.jitsi.jicofo.ENABLE_VP9=true" >> /defaults/sip-communicator.properties
+    
+    echo "org.jitsi.jicofo.ENABLE_VP8=false" >> /defaults/sip-communicator.properties
+    echo "org.jitsi.jicofo.ENABLE_H264=false" >> /defaults/sip-communicator.properties
+
+    exec "$@"
+
