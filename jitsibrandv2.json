@@ -1,7 +1,6 @@
 {
     "inviteDomain":"",
-    "backgroundColor":"#e5e6e4",
-    "backgroundImageUrl":"https://www.hmb.gov.tr/static/media/pattern.f192d493.png",
+    "backgroundColor":"#222d56",
     "logoClickUrl":"https://konferans.hmb.gov.tr",
     "logoImageUrl":"https://ms.hmb.gov.tr/uploads/2018/12/logo.png"   
 }
